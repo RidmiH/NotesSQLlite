@@ -22,11 +22,13 @@ class NotesAdapter(private var notes: List<Note>,context: Context) : RecyclerVie
         val deleteButton : ImageView = itemView.findViewById(R.id.deleteButton)
     }
 
+    // Create ViewHolder instances
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.note_item,parent,false)
         return NoteViewHolder(view)
     }
 
+    // Return the number of items in the RecyclerView
     override fun getItemCount(): Int = notes.size
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
@@ -34,12 +36,14 @@ class NotesAdapter(private var notes: List<Note>,context: Context) : RecyclerVie
         holder.titleTextView.text = note.title
         holder.contentTextView.text = note.content
 
+        // Set OnClickListener for the updateButton to navigate to UpdateNoteActivity with the note ID
         holder.updateButton.setOnClickListener{
             val intent = Intent(holder.itemView.context,UpdateNoteActivity::class.java).apply {
                 putExtra("note_id",note.id)
             }
             holder.itemView.context.startActivity(intent)
         }
+        // Set OnClickListener for the deleteButton to delete the note and refresh the data
         holder.deleteButton.setOnClickListener {
             db.deleteNote(note.id)
             refreshData(db.getAllNotes())
@@ -48,7 +52,7 @@ class NotesAdapter(private var notes: List<Note>,context: Context) : RecyclerVie
         }
 
     }
-
+    // Function to refresh the data in the RecyclerView
     fun refreshData(newNote: List<Note>){
         notes = newNote
         notifyDataSetChanged()

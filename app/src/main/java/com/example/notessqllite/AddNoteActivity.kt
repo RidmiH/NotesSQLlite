@@ -17,9 +17,12 @@ class AddNoteActivity : AppCompatActivity() {
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize the database helper
         db = NotesDatabaseHelper(this)
 
+        // Set OnClickListener for the saveButton
         binding.saveButton.setOnClickListener{
+            // Get title and content from EditText fields
             val title = binding.titleEditText.text.toString()
             val content = binding.contentEditText.text.toString()
 
@@ -33,7 +36,11 @@ class AddNoteActivity : AppCompatActivity() {
             }
 
             val note = Note(0,title,content)
+
+            // Insert the note into the database
             db.insertNote(note)
+
+            // Finish the activity and show a toast indicating that the note is saved
             finish()
             Toast.makeText(this,"Note Saved",Toast.LENGTH_SHORT).show()
         }
